@@ -1,0 +1,46 @@
+/* Progressive enhancement: existing diagrams remain if WebGL is unavailable. */
+[data-scene] { position: relative; }
+.hero-route[data-scene] { position: absolute; inset: 7rem -4vw 6rem 53%; opacity: .85; }
+.network-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.hero-route.three-ready > span, .network-icon.three-ready > svg { visibility: hidden; }
+.vision-map.three-ready .arkansas-network { opacity: 0; }
+.vision-map .network-canvas { z-index: 1; }
+.network-meta, .network-readout { z-index: 3; }
+.network-meta { font-size: .65rem; flex-wrap: wrap; }
+.network-readout { font-size: .65rem; }
+.scene-label { position: absolute; z-index: 2; transform: translate(-50%,-100%); color: #d2e8e0; font-size: clamp(.6rem,.9vw,.75rem); font-weight: 750; letter-spacing: .07em; white-space: nowrap; pointer-events: none; text-shadow: 0 2px 5px #07110d; }
+.scene-label.hub { color: #73f3bc; font-weight: 850; }
+.scene-label.county { color: #80a89c; font-size: .75rem; letter-spacing: .24em; }
+.three-lost .scene-label, .three-lost .network-canvas { display: none !important; }
+.system-rail { padding-top: 3rem; }
+.system-rail.three-ready > i { visibility: hidden; }
+.process-track.three-ready .step-node { visibility: hidden; }
+.process-track.three-ready::before, .process-track.three-ready::after { opacity: 0; }
+.network-icon { position: relative; width: 3rem; height: 3rem; }
+.motion-toggle { position: fixed; bottom: 1rem; right: 1rem; z-index: 90; padding: .6rem .85rem; color: #fff; background: #07110deb; border: 1px solid #739287; border-radius: 2rem; font-size: .75rem; cursor: pointer; box-shadow: 0 3px 15px #0002; }
+.motion-toggle[hidden] { display: none; }
+.animations-paused *, .animations-paused *::before, .animations-paused *::after { animation-play-state: paused !important; }
+.contact-form { max-width: 52rem; margin-top: 2.5rem; padding: clamp(1.2rem,3vw,2.5rem); background: #fff; border-top: 3px solid var(--green); box-shadow: 0 18px 60px #07110d08; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem; }
+.contact-form label { display: grid; gap: .5rem; font-size: .875rem; font-weight: 650; }
+.contact-form input, .contact-form select, .contact-form textarea { width: 100%; min-width: 0; padding: .85rem; color: var(--ink); background: #f6f9f7; border: 1px solid #afc5b9; border-radius: 0; font: 400 1rem/1.5 var(--sans); }
+.contact-form textarea { resize: vertical; min-height: 9rem; }
+.contact-form .form-note { font-size: .85rem; line-height: 1.6; margin: 1rem 0 1.5rem; }
+.contact-form .form-status { font-size: .95rem; margin: 1rem 0 0; }
+.contact-form .form-status:empty { margin: 0; }
+.contact-form button { cursor: pointer; }
+.contact-form button:disabled { opacity: .6; cursor: wait; }
+.form-status[data-state="error"] { color: #9b2630; }
+.form-status[data-state="success"] { color: var(--green); }
+@media(max-width:800px) {
+  .hero-route[data-scene] { inset: 20% -30% 12% 40%; opacity: .27; }
+  .scene-label { font-size: .65rem; }
+  .system-rail { padding-top: 2.2rem; }
+  .system-rail > div { padding-left: 1.6rem; }
+}
+@media(max-width:520px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .scene-label { font-size: .58rem; letter-spacing: .025em; }
+  .network-readout { font-size: .57rem; }
+  .motion-toggle { bottom: .65rem; right: .65rem; }
+}

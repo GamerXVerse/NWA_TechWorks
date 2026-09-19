@@ -107,6 +107,7 @@ function placeNetworkPackets(now) {
 }
 
 function setNetworkRunning(shouldRun) {
+  if (network?.classList.contains('three-ready') || document.documentElement.classList.contains('animations-paused')) shouldRun = false;
   if (!network || reduceMotion || shouldRun === networkRunning) return;
   networkRunning = shouldRun;
   network.classList.toggle("is-online", shouldRun);
@@ -118,6 +119,34 @@ function setNetworkRunning(shouldRun) {
     cancelAnimationFrame(networkFrame);
   }
 }
+
+document.addEventListener('network-3d-ready', () => setNetworkRunning(false));
+document.addEventListener('network-motion', event => setNetworkRunning(!event.detail.paused));
+
+const contactForm = document.querySelector('[data-contact-form]');
+document.querySelectorAll('[data-contact-person]').forEach(link => link.addEventListener('click', () => {
+  contactForm.elements.contact.value = link.dataset.contactPerson;
+  contactForm.elements.name.focus({preventScroll: true});
+}));
+contactForm?.addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!contactForm.reportValidity()) return;
+  const button = contactForm.querySelector('button[type="submit"]');
+  const status = contactForm.querySelector('[data-form-status]');
+  if (button.disabled) return;
+  button.disabled = true; status.textContent = 'Sending your inquiry…'; status.dataset.state = 'pending';
+  try {
+    const response = await fetch(contactForm.action, {method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/json'}, body: new URLSearchParams(new FormData(contactForm)).toString(), signal: AbortSignal.timeout(15000)});
+    if (!response.ok) throw new Error('Submission failed');
+    const isJSON = response.headers.get('content-type')?.includes('application/json');
+    if (isJSON && !(await response.json()).ok) throw new Error('Submission not accepted');
+    status.textContent = 'Thank you — your inquiry has been received. We’ll reply by email.';
+    status.dataset.state = 'success'; contactForm.reset();
+  } catch {
+    status.textContent = 'We couldn’t confirm delivery. Your details are still here; please try again in a moment.';
+    status.dataset.state = 'error';
+  } finally { button.disabled = false; }
+});
 
 if (network) {
   if (reduceMotion) {

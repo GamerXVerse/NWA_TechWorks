@@ -11,6 +11,7 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2307110d'/%3E%3Cpath d='M14 20h13l10 24h13M14 44h13l10-24h13' fill='none' stroke='%2338d996' stroke-width='6' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='14' cy='20' r='4' fill='%233d7cff'/%3E%3Ccircle cx='50' cy='44' r='4' fill='%233d7cff'/%3E%3C/svg%3E" />
     <title>TechPosure | Technology for Northwest Arkansas Nonprofits</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="three-styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -297,7 +298,7 @@
         <div class="vision-map network-shell" data-network>
           <div class="network-meta" aria-hidden="true">
             <span>NORTHWEST ARKANSAS COMMUNITY NETWORK</span>
-            <span>LIVE SYSTEM MAP · 36.3729° N</span>
+            <span>BENTON COUNTY · CONCEPT MAP</span>
           </div>
           <svg class="arkansas-network" viewBox="0 0 520 520" role="img" aria-labelledby="arkansas-map-title arkansas-map-desc">
             <title id="arkansas-map-title">TechPosure’s Northwest Arkansas community network</title>
@@ -346,7 +347,7 @@
           </svg>
           <div class="network-readout" aria-hidden="true">
             <span><i></i> Signals moving from Bentonville</span>
-            <b>05 ACTIVE ROUTES</b>
+            <b>05 COMMUNITY CONNECTIONS</b>
           </div>
         </div>
         <div class="vision-copy reveal">
@@ -367,7 +368,22 @@
             <p>
               If your nonprofit or community initiative needs a website, application, tracking system, workflow, technology setup, or another technical project, we’d like to hear about it.
             </p>
-            <a class="button button-dark" href="mailto:aarush.divakarla@gmail.com?subject=TechPosure%20Project%20Inquiry">Tell Us What You Need <span aria-hidden="true">↗</span></a>
+            <form class="contact-form" name="project-inquiry" method="POST" action="/contact-submit" data-netlify="true" netlify-honeypot="bot-field" data-contact-form>
+              <input type="hidden" name="form-name" value="project-inquiry" />
+              <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+              <div class="form-grid">
+                <label>Your name <input name="name" autocomplete="name" required maxlength="100" /></label>
+                <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+                <label>Organization <input name="organization" autocomplete="organization" required maxlength="160" /></label>
+                <label>Who would you like to reach?
+                  <select name="contact"><option value="team">The TechPosure team</option value="aarush">Aarush Divakarla</option><option value="prasen">Prasenjit Panigrahi</option><option value="toby">Frederick Noel Toby</option></select>
+                </label>
+              </div>
+              <label>What would you like to build or improve? <textarea name="message" rows="5" required minlength="20" maxlength="5000" placeholder="Tell us about your mission, the challenge, and what a useful solution would look like."></textarea></label>
+              <p class="form-note">We’ll use these details to respond to your inquiry. Please don’t include passwords or sensitive information.</p>
+              <button class="button button-dark" type="submit">Send project inquiry <span aria-hidden="true">↗</span></button>
+              <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+            </form>
           </div>
         </div>
 
@@ -379,8 +395,7 @@
             </div>
             <div class="profile-info">
               <h3>Aarush Divakarla</h3>
-              <a href="mailto:aarush.divakarla@gmail.com">aarush.divakarla@gmail.com</a>
-              <a href="tel:+14793261604">479-326-1604</a>
+              <a href="#contact" data-contact-person="aarush">Contact Aarush ↗</a>
             </div>
           </article>
           <article class="profile-card reveal">
@@ -390,8 +405,7 @@
             </div>
             <div class="profile-info">
               <h3>Prasenjit Panigrahi</h3>
-              <a href="mailto:prasen.pani@gmail.com">prasen.pani@gmail.com</a>
-              <a href="tel:+14792953359">479-295-3359</a>
+              <a href="#contact" data-contact-person="prasen">Contact Prasenjit ↗</a>
             </div>
           </article>
           <article class="profile-card reveal">
@@ -401,8 +415,7 @@
             </div>
             <div class="profile-info">
               <h3>Frederick Noel Toby</h3>
-              <a href="mailto:freddnoeltoby@gmail.com">freddnoeltoby@gmail.com</a>
-              <a href="tel:+14799952902">479-995-2902</a>
+              <a href="#contact" data-contact-person="toby">Contact Frederick ↗</a>
             </div>
           </article>
         </div>
@@ -426,6 +439,8 @@
       </div>
     </footer>
 
+    <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>Pause animations</button>
     <script src="script.js" defer></script>
+    <script type="module" src="network-3d.js"></script>
   </body>
 </html>
