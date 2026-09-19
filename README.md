@@ -1,6 +1,6 @@
-# NWA TechWorks website
+# TechPosure website
 
-The deployable website is in `dist/`. The `NWA-TechWorks-Netlify.zip` archive places `index.html` at the root, so it can be uploaded directly to Netlify Drop or used for a manual Netlify deploy.
+The deployable website is in `dist/`. The `TechPosure-Netlify.zip` archive places `index.html` at the root, so it can be uploaded directly to Netlify Drop or used for a manual Netlify deploy.
 
 ## Local preview
 

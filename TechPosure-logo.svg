@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="title desc">
+  <title id="title">TechPosure logo</title>
+  <desc id="desc">A connected green and blue geometric mark followed by the TechPosure wordmark.</desc>
+  <rect width="1200" height="320" fill="white"/>
+  <g transform="translate(42 42)">
+    <rect width="236" height="236" rx="44" fill="#07110d"/>
+    <path d="M52 65h48l42 106h42M52 171h48l42-106h42" fill="none" stroke="#38d996" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M52 65 142 171M52 171 142 65" fill="none" stroke="#6d9cff" stroke-width="8" stroke-linecap="round" opacity=".95"/>
+    <circle cx="52" cy="65" r="17" fill="#07110d" stroke="#fff" stroke-width="8"/>
+    <circle cx="184" cy="65" r="17" fill="#07110d" stroke="#fff" stroke-width="8"/>
+    <circle cx="184" cy="171" r="17" fill="#07110d" stroke="#fff" stroke-width="8"/>
+  </g>
+  <text x="340" y="205" fill="#07110d" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="800" letter-spacing="-5">Tech<tspan fill="#0d7c52">Posure</tspan></text>
+</svg>

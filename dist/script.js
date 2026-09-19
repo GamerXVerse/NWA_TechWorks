@@ -79,3 +79,60 @@ document.addEventListener("keydown", (event) => {
 window.matchMedia("(min-width: 1101px)").addEventListener("change", (event) => {
   if (event.matches) closeMenu();
 });
+
+const network = document.querySelector("[data-network]");
+const packets = network ? [...network.querySelectorAll(".network-packet")] : [];
+let networkFrame = 0;
+let networkRunning = false;
+let networkStart = performance.now();
+
+function placeNetworkPackets(now) {
+  if (!networkRunning) return;
+
+  packets.forEach((packet) => {
+    const route = document.getElementById(packet.dataset.route);
+    if (!route || typeof route.getTotalLength !== "function") return;
+
+    const duration = Number(packet.dataset.duration) || 3200;
+    const delay = Number(packet.dataset.delay) || 0;
+    const progress = ((now - networkStart + delay) % duration) / duration;
+    const point = route.getPointAtLength(route.getTotalLength() * progress);
+    const fade = Math.min(progress * 8, (1 - progress) * 8, 1);
+
+    packet.setAttribute("transform", `translate(${point.x} ${point.y})`);
+    packet.style.opacity = String(Math.max(0, fade));
+  });
+
+  networkFrame = requestAnimationFrame(placeNetworkPackets);
+}
+
+function setNetworkRunning(shouldRun) {
+  if (!network || reduceMotion || shouldRun === networkRunning) return;
+  networkRunning = shouldRun;
+  network.classList.toggle("is-online", shouldRun);
+
+  if (shouldRun) {
+    networkStart = performance.now();
+    networkFrame = requestAnimationFrame(placeNetworkPackets);
+  } else {
+    cancelAnimationFrame(networkFrame);
+  }
+}
+
+if (network) {
+  if (reduceMotion) {
+    network.classList.add("is-online");
+  } else if (!("IntersectionObserver" in window)) {
+    setNetworkRunning(true);
+  } else {
+    const networkObserver = new IntersectionObserver(
+      ([entry]) => setNetworkRunning(entry.isIntersecting && !document.hidden),
+      { threshold: 0.16 },
+    );
+    networkObserver.observe(network);
+
+    document.addEventListener("visibilitychange", () => {
+      setNetworkRunning(!document.hidden && network.getBoundingClientRect().top < window.innerHeight && network.getBoundingClientRect().bottom > 0);
+    });
+  }
+}
