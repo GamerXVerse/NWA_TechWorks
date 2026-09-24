@@ -124,6 +124,12 @@ document.addEventListener('network-3d-ready', () => setNetworkRunning(false));
 document.addEventListener('network-motion', event => setNetworkRunning(!event.detail.paused));
 
 const contactForm = document.querySelector('[data-contact-form]');
+const contactEmails = {
+  team: 'aarush.divakarla@gmail.com',
+  aarush: 'aarush.divakarla@gmail.com',
+  prasen: 'prasen.pani@gmail.com',
+  toby: 'tobyf@bentonvillek12.org',
+};
 document.querySelectorAll('[data-contact-person]').forEach(link => link.addEventListener('click', () => {
   contactForm.elements.contact.value = link.dataset.contactPerson;
   contactForm.elements.name.focus({preventScroll: true});
@@ -133,18 +139,30 @@ contactForm?.addEventListener('submit', async event => {
   if (!contactForm.reportValidity()) return;
   const button = contactForm.querySelector('button[type="submit"]');
   const status = contactForm.querySelector('[data-form-status]');
+  const fallback = contactForm.querySelector('[data-form-fallback]');
   if (button.disabled) return;
+  fallback.hidden = true;
   button.disabled = true; status.textContent = 'Sending your inquiry…'; status.dataset.state = 'pending';
   try {
     const response = await fetch(contactForm.action, {method: 'POST', headers: {'Content-Type':'application/x-www-form-urlencoded', 'Accept':'application/json'}, body: new URLSearchParams(new FormData(contactForm)).toString(), signal: AbortSignal.timeout(15000)});
-    if (!response.ok) throw new Error('Submission failed');
-    const isJSON = response.headers.get('content-type')?.includes('application/json');
-    if (isJSON && !(await response.json()).ok) throw new Error('Submission not accepted');
-    status.textContent = 'Thank you — your inquiry has been received. We’ll reply by email.';
+    let accepted = false;
+    if (response.ok && response.headers.get('content-type')?.includes('application/json')) {
+      accepted = (await response.json()).ok === true;
+    } else if (response.ok && response.headers.has('x-nf-request-id')) {
+      // Netlify returns the custom success page after accepting a Forms POST.
+      accepted = (await response.text()).includes('data-contact-success');
+    }
+    if (!accepted) throw new Error('Submission not accepted');
+    status.textContent = 'Thank you — your inquiry has been sent. We’ll reply by email.';
     status.dataset.state = 'success'; contactForm.reset();
   } catch {
-    status.textContent = 'We couldn’t confirm delivery. Your details are still here; please try again in a moment.';
+    status.textContent = 'Your inquiry was not sent. Your details are still here; please try again or email us directly.';
     status.dataset.state = 'error';
+    const email = contactEmails[contactForm.elements.contact.value] || contactEmails.team;
+    const link = fallback.querySelector('[data-fallback-link]');
+    link.href = `mailto:${email}`;
+    link.textContent = email;
+    fallback.hidden = false;
   } finally { button.disabled = false; }
 });
 

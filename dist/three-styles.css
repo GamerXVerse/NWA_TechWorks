@@ -28,6 +28,9 @@
 .contact-form .form-note { font-size: .85rem; line-height: 1.6; margin: 1rem 0 1.5rem; }
 .contact-form .form-status { font-size: .95rem; margin: 1rem 0 0; }
 .contact-form .form-status:empty { margin: 0; }
+.contact-form .form-fallback { margin: .5rem 0 0; font-size: .9rem; }
+.contact-form .form-fallback[hidden] { display: none; }
+.contact-form .form-fallback a { color: var(--blue); overflow-wrap: anywhere; }
 .contact-form button { cursor: pointer; }
 .contact-form button:disabled { opacity: .6; cursor: wait; }
 .form-status[data-state="error"] { color: #9b2630; }
