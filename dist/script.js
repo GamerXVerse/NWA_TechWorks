@@ -17,6 +17,38 @@ function updateScrollUI() {
 updateScrollUI();
 window.addEventListener("scroll", updateScrollUI, { passive: true });
 
+const scrollChapters = [...document.querySelectorAll("[data-scroll-chapter]")];
+const parallaxFigure = document.querySelector("[data-parallax]");
+const parallaxImage = parallaxFigure?.querySelector("img");
+const parallaxStage = parallaxFigure?.closest(".story-stage");
+let scrollMotionFrame = 0;
+
+function updateScrollMotion() {
+  scrollMotionFrame = 0;
+  scrollChapters.forEach((chapter) => {
+    const bounds = chapter.getBoundingClientRect();
+    const progress = reduceMotion ? 0 : Math.max(0, Math.min(1, (window.innerHeight * 0.84 - bounds.top) / (window.innerHeight * 0.5)));
+    chapter.style.setProperty("--chapter-line-scale", (0.64 + progress * 0.36).toFixed(3));
+    chapter.classList.toggle("chapter-active", bounds.top < window.innerHeight * 0.72 && bounds.bottom > window.innerHeight * 0.24);
+  });
+
+  if (!reduceMotion && parallaxImage && parallaxStage) {
+    const bounds = parallaxStage.getBoundingClientRect();
+    const progress = Math.max(0, Math.min(1, (window.innerHeight - bounds.top) / (window.innerHeight + bounds.height)));
+    const distance = window.innerWidth <= 800 ? 22 : 38;
+    parallaxImage.style.setProperty("--image-parallax", `${((progress - 0.5) * -distance).toFixed(1)}px`);
+  }
+}
+
+function scheduleScrollMotion() {
+  if (scrollMotionFrame) return;
+  scrollMotionFrame = requestAnimationFrame(updateScrollMotion);
+}
+
+scheduleScrollMotion();
+window.addEventListener("scroll", scheduleScrollMotion, { passive: true });
+window.addEventListener("resize", scheduleScrollMotion, { passive: true });
+
 const reveals = document.querySelectorAll(".reveal:not(.is-visible)");
 if (reduceMotion || !("IntersectionObserver" in window)) {
   reveals.forEach((element) => element.classList.add("is-visible"));

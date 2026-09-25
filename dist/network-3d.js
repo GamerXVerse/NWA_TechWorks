@@ -83,7 +83,7 @@ function makeScene(host, kind) {
     ? new THREE.PerspectiveCamera(42, 1, .1, 160)
     : new THREE.OrthographicCamera(-5, 5, 5, -5, .1, 2000);
   camera.position.z = kind === 'hero' ? 12 : 800;
-  const s = {host, kind, renderer, scene, group, camera, packets: [], labels: [], visible: true, pointer: {x: 0, y: 0}};
+  const s = {host, kind, renderer, scene, group, camera, packets: [], labels: [], visible: true, scrollTarget: 0, scrollProgress: 0, pointer: {x: 0, y: 0}};
   host.append(renderer.domElement);
   renderer.domElement.addEventListener('webglcontextlost', event => {
     event.preventDefault();
@@ -281,6 +281,17 @@ function updateStoryProgress() {
   storyTarget = travel > 0 ? clamp(-storyHost.getBoundingClientRect().top / travel) : 0;
 }
 
+function updateSceneViewport(s) {
+  const bounds = s.host.getBoundingClientRect();
+  s.scrollTarget = clamp((innerHeight - bounds.top) / (innerHeight + bounds.height));
+  s.host.classList.toggle('scene-on-screen', bounds.bottom > 0 && bounds.top < innerHeight);
+}
+
+function updateScrollProgress() {
+  updateStoryProgress();
+  scenes.forEach(updateSceneViewport);
+}
+
 function setStoryMotionEnabled(enabled) {
   if (!storyHost) return;
   const shouldEnable = enabled && storyReady && !paused && !preference.matches;
@@ -317,7 +328,7 @@ function setStoryMotionEnabled(enabled) {
     if (storyCopy) storyCopy.inert = false;
     storyMoments.forEach(moment => { moment.style.opacity = '0'; moment.style.visibility = 'hidden'; });
   }
-  updateStoryProgress();
+  updateScrollProgress();
 }
 
 function updateMomentVisibility(progress) {
@@ -407,10 +418,20 @@ function draw(s, time) {
     }
   }
   if (s.kind === 'map') {
-    s.group.rotation.y = -.16 + (paused ? 0 : Math.sin(time * .22) * .04 + s.pointer.x * .12);
-    s.group.rotation.x = -.5 + (paused ? 0 : s.pointer.y * .09);
+    if (!paused && !preference.matches) s.scrollProgress += (s.scrollTarget - s.scrollProgress) * .14;
+    const entrance = smoothstep(s.scrollProgress, .03, .62);
+    s.group.position.y = (1 - entrance) * 16;
+    s.group.scale.setScalar(.985 + entrance * .015);
+    s.group.rotation.y = -.16 + (paused || preference.matches ? 0 : Math.sin(time * .22) * .04 + s.pointer.x * .12) - (1 - entrance) * .025;
+    s.group.rotation.x = -.5 + (paused || preference.matches ? 0 : s.pointer.y * .09) + (1 - entrance) * .02;
+  } else if (s.kind === 'icon' || s.kind === 'rail' || s.kind === 'process') {
+    if (!paused && !preference.matches) s.scrollProgress += (s.scrollTarget - s.scrollProgress) * .14;
+    const entrance = smoothstep(s.scrollProgress, .03, .62);
+    const lift = s.kind === 'icon' ? .16 : 12;
+    s.group.position.y = (1 - entrance) * lift;
+    s.group.scale.setScalar(.96 + entrance * .04);
+    if (s.kind === 'icon') s.group.rotation.y = paused || preference.matches ? 0 : Math.sin(time * .5) * .3;
   }
-  if (s.kind === 'icon') s.group.rotation.y = paused ? 0 : Math.sin(time * .5) * .3;
   s.packets.forEach(({curve, packet, offset, speed}) => packet.position.copy(curve.getPoint((time * speed + offset) % 1)));
   s.group.updateMatrixWorld(true);
   s.labels.forEach(({el, position}) => {
@@ -459,8 +480,8 @@ document.addEventListener('visibilitychange', () => {
     frame = 0;
   } else resume();
 });
-window.addEventListener('scroll', updateStoryProgress, {passive: true});
-window.addEventListener('resize', updateStoryProgress, {passive: true});
+window.addEventListener('scroll', updateScrollProgress, {passive: true});
+window.addEventListener('resize', updateScrollProgress, {passive: true});
 
 const targets = [['.hero-route', 'hero'], ['.vision-map', 'map'], ['.system-rail', 'rail'], ['.process-track', 'process']];
 document.querySelectorAll('.service-card').forEach(card => {
@@ -486,6 +507,7 @@ const observer = new IntersectionObserver(entries => entries.forEach(entry => {
       if (s.kind === 'icon') buildIcon(s);
       resize(s);
       scenes.push(s);
+      updateSceneViewport(s);
       host.classList.add('three-ready');
       host.dataset.rendered = 'threejs';
       new ResizeObserver(() => resize(s)).observe(host);

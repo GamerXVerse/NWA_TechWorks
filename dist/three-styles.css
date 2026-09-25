@@ -4,8 +4,11 @@
 .hero-story.is-cinematic { height: 500svh; }
 .hero-story.is-cinematic > .hero { position: sticky; top: 0; height: 100svh; min-height: 100svh; }
 .hero-route[data-scene] { position: absolute; z-index: 1; inset: 0; opacity: 1; }
-.network-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
-.hero-route.three-ready > span, .network-icon.three-ready > svg { visibility: hidden; }
+.network-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; transition: opacity .55s ease; }
+[data-scene].scene-on-screen > .network-canvas { opacity: 1; }
+.hero-route > span { transition: opacity .55s ease; }
+.hero-route.three-ready.scene-on-screen > span, .network-icon.three-ready.scene-on-screen > svg { opacity: 0; }
+.network-icon > svg { transition: opacity .55s ease, transform .3s ease; }
 .story-moments { position: absolute; z-index: 4; inset: 0; pointer-events: none; }
 .story-moment { position: absolute; right: 8vw; bottom: 15vh; width: min(33rem, 37vw); color: var(--ink); opacity: 0; visibility: hidden; transform: translateY(14px); }
 .story-moment .kicker { margin-bottom: 1rem; color: var(--green); }
@@ -15,7 +18,8 @@
 .story-moment-services { width: min(38rem, 43vw); }
 .story-services { display: flex; flex-wrap: wrap; gap: .65rem; }
 .story-services span { padding: .5rem .8rem; border: 1px solid rgba(7,17,13,.2); background: rgba(255,255,255,.84); font-size: .86rem; font-weight: 700; }
-.vision-map.three-ready .arkansas-network { opacity: 0; }
+.arkansas-network { transition: opacity .55s ease; }
+.vision-map.three-ready.scene-on-screen .arkansas-network { opacity: 0; }
 .vision-map .network-canvas { z-index: 1; }
 .network-meta, .network-readout { z-index: 3; }
 .network-meta { font-size: .65rem; flex-wrap: wrap; }
@@ -25,9 +29,12 @@
 .scene-label.county { color: #80a89c; font-size: .75rem; letter-spacing: .24em; }
 .three-lost .scene-label, .three-lost .network-canvas { display: none !important; }
 .system-rail { padding-top: 3rem; }
-.system-rail.three-ready > i { visibility: hidden; }
-.process-track.three-ready .step-node { visibility: hidden; }
-.process-track.three-ready::before, .process-track.three-ready::after { opacity: 0; }
+.system-rail > i { transition: opacity .55s ease; }
+.system-rail.three-ready.scene-on-screen > i { opacity: 0; }
+.process-track .step-node { transition: opacity .55s ease; }
+.process-track.three-ready.scene-on-screen .step-node { opacity: 0; }
+.process-track.three-ready::before, .process-track.three-ready::after { transition: opacity .55s ease, transform 1.4s cubic-bezier(.2,.7,.2,1) .2s; }
+.process-track.three-ready.scene-on-screen::before, .process-track.three-ready.scene-on-screen::after { opacity: 0; }
 .network-icon { position: relative; width: 3rem; height: 3rem; }
 .motion-toggle { position: fixed; bottom: 1rem; right: 1rem; z-index: 90; padding: .6rem .85rem; color: var(--ink); background: rgba(255,255,255,.96); border: 1px solid var(--line); border-radius: 2rem; font-size: .75rem; cursor: pointer; box-shadow: 0 3px 15px rgba(7,17,13,.09); }
 .motion-toggle[hidden] { display: none; }
@@ -70,6 +77,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .network-canvas, .arkansas-network, .network-icon > svg, .system-rail > i, .process-track .step-node { transition: none !important; }
   .hero-story.is-cinematic { height: auto; }
   .hero-story.is-cinematic > .hero { position: relative; height: auto; min-height: 100svh; }
   .story-moment { display: none; }
