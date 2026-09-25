@@ -15,10 +15,19 @@ const sphere = new THREE.SphereGeometry(1, 18, 12);
 const ring = new THREE.TorusGeometry(1, .025, 8, 64);
 const v = (x, y, z = 0) => new THREE.Vector3(x, y, z);
 const clamp = (value, min = 0, max = 1) => Math.max(min, Math.min(max, value));
+const scrollResponse = .55;
 const smoothstep = (value, start, end) => {
   const t = clamp((value - start) / (end - start));
   return t * t * (3 - 2 * t);
 };
+
+function followScroll(s, current, target, time) {
+  const lastTime = s.lastScrollTime ?? time;
+  const delta = Math.min(Math.max(time - lastTime, 0), .05);
+  s.lastScrollTime = time;
+  const amount = 1 - Math.exp(-delta / scrollResponse);
+  return current + (target - current) * amount;
+}
 
 function node(group, position, radius, color) {
   const material = new THREE.MeshBasicMaterial({color, transparent: true, depthWrite: false});
@@ -364,7 +373,7 @@ function draw(s, time) {
     const activeStory = storyReady && storyHost?.classList.contains('is-cinematic');
     if (activeStory) {
       const story = s.story;
-      story.progress += (storyTarget - story.progress) * .13;
+      story.progress = followScroll(s, story.progress, storyTarget, time);
       if (Math.abs(storyTarget - story.progress) < .0005) story.progress = storyTarget;
       const progress = story.progress;
       const exitFade = 1 - smoothstep(progress, .92, 1);
@@ -418,14 +427,16 @@ function draw(s, time) {
     }
   }
   if (s.kind === 'map') {
-    if (!paused && !preference.matches) s.scrollProgress += (s.scrollTarget - s.scrollProgress) * .14;
+    if (!paused && !preference.matches) s.scrollProgress = followScroll(s, s.scrollProgress, s.scrollTarget, time);
+    else s.lastScrollTime = time;
     const entrance = smoothstep(s.scrollProgress, .03, .62);
     s.group.position.y = (1 - entrance) * 16;
     s.group.scale.setScalar(.985 + entrance * .015);
     s.group.rotation.y = -.16 + (paused || preference.matches ? 0 : Math.sin(time * .22) * .04 + s.pointer.x * .12) - (1 - entrance) * .025;
     s.group.rotation.x = -.5 + (paused || preference.matches ? 0 : s.pointer.y * .09) + (1 - entrance) * .02;
   } else if (s.kind === 'icon' || s.kind === 'rail' || s.kind === 'process') {
-    if (!paused && !preference.matches) s.scrollProgress += (s.scrollTarget - s.scrollProgress) * .14;
+    if (!paused && !preference.matches) s.scrollProgress = followScroll(s, s.scrollProgress, s.scrollTarget, time);
+    else s.lastScrollTime = time;
     const entrance = smoothstep(s.scrollProgress, .03, .62);
     const lift = s.kind === 'icon' ? .16 : 12;
     s.group.position.y = (1 - entrance) * lift;
