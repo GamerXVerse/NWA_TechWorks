@@ -12,10 +12,12 @@
     <title>TechPosure | Technology for Northwest Arkansas Nonprofits</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="three-styles.css" />
+    <link rel="stylesheet" href="spatial.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="scroll-progress" aria-hidden="true"><span data-progress></span></div>
+    <div class="spatial-world" data-spatial-world aria-hidden="true"></div>
 
     <header class="site-header" data-header>
       <a class="brand" href="#mission" aria-label="TechPosure home">
@@ -381,35 +383,12 @@
         </div>
       </section>
 
-      <section class="contact" id="contact" aria-labelledby="contact-title" data-section data-scroll-chapter>
-        <div class="contact-intro section-pad">
-          <div class="section-index reveal"><span>07</span> Work with us</div>
-          <div class="contact-title-wrap reveal">
-            <h2 id="contact-title">Have a technical problem <em>we can help solve?</em></h2>
-            <p>
-              If your nonprofit or community initiative needs a website, application, tracking system, workflow, technology setup, or another technical project, we’d like to hear about it.
-            </p>
-            <form class="contact-form" name="project-inquiry" method="POST" action="/contact-submit" data-netlify="true" netlify-honeypot="bot-field" data-contact-form>
-              <input type="hidden" name="form-name" value="project-inquiry" />
-              <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
-              <div class="form-grid">
-                <label>Your name <input name="name" autocomplete="name" required maxlength="100" /></label>
-                <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
-                <label>Organization <input name="organization" autocomplete="organization" required maxlength="160" /></label>
-                <label>Who would you like to reach?
-                  <select name="contact"><option value="team">The TechPosure team</option><option value="aarush">Aarush Divakarla</option><option value="prasen">Prasenjit Panigrahi</option><option value="toby">Frederick Noel Toby</option></select>
-                </label>
-              </div>
-              <label>What would you like to build or improve? <textarea name="message" rows="5" required minlength="20" maxlength="5000" placeholder="Tell us about your mission, the challenge, and what a useful solution would look like."></textarea></label>
-              <p class="form-note">We’ll use these details to respond to your inquiry. Please don’t include passwords or sensitive information.</p>
-              <button class="button button-dark" type="submit">Send project inquiry <span aria-hidden="true">↗</span></button>
-              <p class="form-status" role="status" aria-live="polite" data-form-status></p>
-              <p class="form-fallback" data-form-fallback hidden>Or email <a href="mailto:aarush.divakarla@gmail.com" data-fallback-link>aarush.divakarla@gmail.com</a> directly.</p>
-            </form>
+      <section class="contact" aria-labelledby="contact-title" data-scroll-chapter>
+        <div class="team section-pad" id="team" aria-label="TechPosure contacts">
+          <div class="team-heading">
+            <div class="section-index"><span>07</span> The people behind TechPosure</div>
+            <h2>Meet the <em>team.</em></h2>
           </div>
-        </div>
-
-        <div class="team section-pad" aria-label="TechPosure contacts">
           <article class="profile-card reveal">
             <div class="portrait portrait-aarush">
               <img src="assets/aarush.jpeg" width="1000" height="1000" alt="Aarush Divakarla" loading="lazy" />
@@ -444,6 +423,33 @@
             </div>
           </article>
         </div>
+        <div class="contact-intro section-pad" id="contact" data-section>
+          <div class="section-index reveal"><span>08</span> Work with us</div>
+          <div class="contact-title-wrap reveal">
+            <h2 id="contact-title">Have a technical problem <em>we can help solve?</em></h2>
+            <p>
+              If your nonprofit or community initiative needs a website, application, tracking system, workflow, technology setup, or another technical project, we’d like to hear about it.
+            </p>
+            <form class="contact-form" name="project-inquiry" method="POST" action="/contact-submit" data-netlify="true" netlify-honeypot="bot-field" data-contact-form>
+              <input type="hidden" name="form-name" value="project-inquiry" />
+              <p hidden><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label></p>
+              <div class="form-grid">
+                <label>Your name <input name="name" autocomplete="name" required maxlength="100" /></label>
+                <label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+                <label>Organization <input name="organization" autocomplete="organization" required maxlength="160" /></label>
+                <label>Who would you like to reach?
+                  <select name="contact"><option value="team">The TechPosure team</option><option value="aarush">Aarush Divakarla</option><option value="prasen">Prasenjit Panigrahi</option><option value="toby">Frederick Noel Toby</option></select>
+                </label>
+              </div>
+              <label>What would you like to build or improve? <textarea name="message" rows="5" required minlength="20" maxlength="5000" placeholder="Tell us about your mission, the challenge, and what a useful solution would look like."></textarea></label>
+              <p class="form-note">We’ll use these details to respond to your inquiry. Please don’t include passwords or sensitive information.</p>
+              <button class="button button-dark" type="submit">Send project inquiry <span aria-hidden="true">↗</span></button>
+              <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+              <p class="form-fallback" data-form-fallback hidden>Or email <a href="mailto:aarush.divakarla@gmail.com" data-fallback-link>aarush.divakarla@gmail.com</a> directly.</p>
+            </form>
+          </div>
+        </div>
+
       </section>
     </main>
 
@@ -466,6 +472,6 @@
 
     <button class="motion-toggle" type="button" aria-pressed="false" data-motion-toggle hidden>Pause animations</button>
     <script src="script.js" defer></script>
-    <script type="module" src="network-3d.js"></script>
+    <script type="module" src="spatial-world.js"></script>
   </body>
 </html>

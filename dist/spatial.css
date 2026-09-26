@@ -1,0 +1,199 @@
+/* The existing semantic document remains the foreground. One fixed canvas is
+   the shared visual space through which every chapter travels. */
+html { background: #fff; }
+body { background: #fff; }
+.spatial-world { position: fixed; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; background: #fff; }
+.spatial-world canvas { display: block; width: 100%; height: 100%; opacity: .92; }
+main, .site-footer { position: relative; z-index: 1; }
+main { isolation: isolate; }
+[data-scroll-chapter], .hero { scroll-margin-top: 5rem; }
+.section-index { letter-spacing: .18em; }
+.section-index::before { background: linear-gradient(90deg, var(--green), var(--blue)); }
+.section-index span { color: var(--green); }
+
+/* Cinematic opening: the network is always part of the same world. */
+.hero-story { position: relative; }
+.hero { min-height: min(100svh, 58rem); padding-block: clamp(8rem, 15vh, 12rem) clamp(5rem, 12vh, 8rem); background: transparent; }
+.hero::after { background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,.98) 27%, rgba(255,255,255,.72) 48%, rgba(255,255,255,.02) 78%); }
+.hero-grid { opacity: .42; }
+.hero-copy { width: min(57rem, 71vw); }
+.hero-copy h1 { font-size: clamp(3.7rem, 7.35vw, 7.3rem); line-height: .91; }
+.hero-lede { max-width: 40rem; }
+.hero-foot { border-top: 1px solid rgba(7,17,13,.12); width: calc(100% - var(--page) * 2); padding-top: 1rem; }
+.story-moments { display: none; }
+.spatial-ready .hero-route { display: none; }
+.spatial-ready .hero-grid { opacity: .26; }
+
+/* Light surfaces let the uninterrupted 3D world read through each chapter. */
+.mission-bridge, .story, .problem, .services, .process, .vision, .contact { background: transparent; color: var(--ink); }
+.mission-bridge, .story-intro, .problem, .services, .process, .vision, .team, .contact-intro { position: relative; }
+.mission-bridge::before, .story-intro::before, .problem::before, .services::before, .process::before, .vision::before, .team::before, .contact-intro::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(110deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.76) 44%, rgba(255,255,255,.2) 100%);
+}
+.story-intro::before, .process::before, .team::before { background: linear-gradient(110deg, rgba(243,248,245,.94), rgba(255,255,255,.68) 62%, rgba(255,255,255,.2)); }
+.problem::before, .vision::before { background: linear-gradient(100deg, rgba(255,255,255,.69), rgba(255,255,255,.88) 58%, rgba(255,255,255,.45)); }
+.mission-bridge, .problem, .services, .process, .vision, .team, .contact-intro { border-top: 1px solid rgba(22,69,48,.1); }
+.mission-bridge { min-height: 86svh; display: flex; flex-direction: column; justify-content: center; }
+.bridge-statement h2 { max-width: 12ch; }
+.bridge-statement p { max-width: 30rem; padding: 1.2rem 1.4rem; border-left: 2px solid var(--green); background: rgba(255,255,255,.66); }
+.system-rail { border-block-color: rgba(10,78,52,.22); }
+.system-rail > div { padding: .7rem .5rem; background: rgba(255,255,255,.72); }
+.system-rail b { letter-spacing: -.01em; }
+
+/* Origin: retain the image and all three story notes without a dark reset. */
+.story { background: transparent; }
+.story-intro { padding-top: clamp(7rem, 12vw, 11rem); }
+.story-stage { min-height: 69rem; gap: clamp(1.2rem, 3vw, 3rem); padding: 0 var(--page) clamp(4rem, 8vw, 8rem); background: transparent; color: var(--ink); }
+.ignite-figure { top: 6rem; height: calc(100svh - 8rem); max-height: 47rem; border-radius: 1.25rem; box-shadow: 0 28px 70px rgba(13,56,36,.14); }
+.ignite-figure img { object-position: center 45%; }
+.story-notes { padding-top: 2rem; padding-bottom: 0; }
+.story-note { min-height: 18rem; border-top-color: rgba(20,86,56,.22); }
+.story-note p { color: #4a5a51; }
+.story-note .note-no { color: var(--blue); }
+.story-note::before { background: var(--green); }
+
+/* Challenge and services become open, airy interface surfaces. */
+.problem { min-height: 88svh; align-items: start; }
+.problem-grid { opacity: .22; background-image: linear-gradient(rgba(28,101,66,.11) 1px, transparent 1px), linear-gradient(90deg, rgba(28,101,66,.11) 1px, transparent 1px); }
+.problem-copy h2 { max-width: 10ch; }
+.problem-copy h2 em { color: var(--green); }
+.problem-copy p { color: #45554c; }
+.problem-panel { border: 1px solid rgba(28,99,68,.19); border-radius: 1.2rem; background: rgba(255,255,255,.82); box-shadow: 0 26px 70px rgba(13,74,48,.07); }
+.panel-label { color: var(--green); }
+.problem-panel li { border-top-color: rgba(20,85,55,.14); color: #304039; }
+.problem-panel li span { color: var(--blue); }
+.problem-quote { border-top-color: rgba(20,85,55,.22); }
+.problem-quote span { color: var(--green); }
+.services-head > p { max-width: 30rem; padding: 1.25rem; background: rgba(255,255,255,.68); border-left: 2px solid var(--blue); }
+.services-grid { gap: 1rem; border: 0; }
+.service-card { min-height: 17rem; border: 1px solid rgba(26,100,65,.17); border-radius: 1.1rem; background: rgba(255,255,255,.84); box-shadow: 0 14px 35px rgba(17,80,53,.055); backdrop-filter: blur(10px); }
+.service-card:hover { transform: translateY(-6px); border-color: rgba(12,148,102,.5); background: rgba(239,252,245,.94); box-shadow: 0 20px 42px rgba(17,80,53,.13); }
+.service-card-accent { background: rgba(231,241,255,.91); color: var(--ink); border-color: rgba(36,95,219,.27); }
+.service-card-accent:hover { background: rgba(221,248,236,.96); color: var(--ink); }
+.service-card-accent p, .service-card-accent .service-top span { color: #526059; }
+.service-card-accent a { border-top-color: rgba(31,86,55,.19); color: var(--green); }
+
+/* Process stays readable HTML while the world forms a four-station pipeline. */
+.process { min-height: 72svh; }
+.process-track { gap: 1rem; }
+.process-track::before, .process-track::after { opacity: .48; }
+.process-track li { padding: 1.5rem; border: 1px solid rgba(17,91,56,.14); border-radius: 1rem; background: rgba(255,255,255,.8); box-shadow: 0 15px 35px rgba(19,77,53,.05); }
+.process-track li:nth-child(even) { transform: translateY(1.3rem); }
+.step-number { margin-bottom: 1.9rem; }
+.step-node { margin-bottom: 1.8rem; }
+
+/* Community map: the 3D county lives in the world; the original SVG is fallback. */
+.vision { min-height: 48rem; }
+.vision::before { background: linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.83) 55%, rgba(255,255,255,.94)); }
+.vision-map { min-height: 42rem; border-right: 0; background: transparent; }
+.network-shell { isolation: auto; background: transparent; }
+.network-shell::before, .network-shell::after { display: none; }
+.network-meta { color: #366451; }
+.network-readout { border-top-color: rgba(15,79,50,.2); color: #536b5e; }
+.network-readout b { color: var(--blue); }
+.vision-copy h2 em { color: var(--green); }
+.vision-copy > p:last-child { max-width: 35rem; color: #46564c; padding: 1.3rem; border-left: 2px solid var(--green); background: rgba(255,255,255,.74); }
+.vision-copy .kicker { color: var(--green); }
+.vision .section-index { color: #536b5e; }
+.vision .section-index span { color: var(--blue); }
+.spatial-ready .arkansas-network { opacity: 0; }
+.spatial-ready .vision-map { background: radial-gradient(circle at center, rgba(234,249,240,.36), transparent 67%); }
+.world-label { position: absolute; z-index: 2; transform: translate(-50%,-150%); padding: .26rem .44rem; border: 1px solid rgba(18,105,67,.22); border-radius: 2rem; background: rgba(255,255,255,.94); color: #285943; font-size: .62rem; font-weight: 780; letter-spacing: .07em; white-space: nowrap; box-shadow: 0 4px 14px rgba(12,65,39,.07); }
+.world-label[hidden] { display: none; }
+.world-label.is-hub { color: var(--green); border-color: rgba(12,148,102,.5); }
+.world-label.is-county { border: 0; border-radius: 0; background: transparent; color: #295f47; font-size: .83rem; letter-spacing: .15em; box-shadow: none; }
+
+/* People become three connected, elevated nodes; the form is the destination. */
+.contact { background: transparent; }
+.team { min-height: 88svh; align-content: center; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1.35rem; padding-top: clamp(7rem, 11vw, 10rem); padding-bottom: clamp(7rem, 11vw, 10rem); }
+.team-heading { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: end; gap: 2rem; margin-bottom: 3rem; }
+.team-heading h2 { font-size: clamp(3rem, 5.5vw, 6rem); }
+.profile-card { overflow: hidden; border: 1px solid rgba(17,83,51,.18); border-radius: 1.2rem; background: rgba(255,255,255,.85); box-shadow: 0 19px 42px rgba(18,70,50,.08); transition: transform .45s cubic-bezier(.2,.7,.2,1), box-shadow .45s ease; }
+.profile-card:hover { transform: translateY(-9px); box-shadow: 0 30px 56px rgba(18,70,50,.16); }
+.portrait { aspect-ratio: 1.15; background: #e9f2ee; }
+.portrait-aarush img { object-position: 50% 30%; }
+.portrait-prasen img { object-position: 37% 28%; }
+.portrait-toby img { object-position: 50% 25%; }
+.profile-info { padding: 1.5rem; }
+.profile-info h3 { margin-bottom: .8rem; }
+.profile-info a { margin-top: .3rem; }
+.contact-intro { min-height: 95svh; display: block; padding-top: clamp(7rem, 11vw, 10rem); padding-bottom: clamp(7rem, 11vw, 10rem); }
+.contact-title-wrap { display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr); grid-template-rows: auto 1fr; gap: 0 clamp(2rem,4vw,4rem); align-items: start; margin-top: 3rem; }
+.contact-title-wrap h2 { max-width: 10ch; font-size: clamp(3.4rem,5.2vw,5.7rem); }
+.contact-title-wrap > p { grid-column: 1; max-width: 31rem; }
+.contact-form { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; border: 1px solid rgba(21,116,72,.25); border-top: 3px solid var(--green); border-radius: 1.2rem; background: rgba(255,255,255,.94); box-shadow: 0 32px 90px rgba(17,77,51,.12); }
+.contact-form input, .contact-form select, .contact-form textarea { border-radius: .45rem; background: rgba(247,251,248,.96); }
+.contact-form input:focus, .contact-form select:focus, .contact-form textarea:focus { outline: 2px solid var(--blue); outline-offset: 2px; background: #fff; }
+.contact-form button { border-radius: .4rem; }
+.site-footer { color: var(--ink); background: rgba(247,250,248,.97); border-top: 1px solid rgba(21,85,53,.2); }
+.site-footer .brand-mark i { border-color: var(--ink); }
+.footer-brand p { color: #54675c; }
+.footer-links a, .footer-meta { color: #516258; }
+.footer-links a:hover { color: var(--green); }
+.motion-toggle { background: rgba(255,255,255,.94); backdrop-filter: blur(10px); }
+
+@media (max-width: 1100px) {
+  .hero-copy { width: min(49rem, 82vw); }
+  .story-stage { grid-template-columns: minmax(0,1.1fr) minmax(19rem,.9fr); }
+  .vision { grid-template-columns: 1fr 1fr; }
+  .team { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .portrait { aspect-ratio: .9; }
+}
+@media (max-width: 800px) {
+  .hero { min-height: 100svh; padding-top: 8rem; }
+  .hero-copy { width: 100%; }
+  .hero::after { background: linear-gradient(90deg, rgba(255,255,255,.98), rgba(255,255,255,.87) 55%, rgba(255,255,255,.47)); }
+  .mission-bridge, .problem, .process, .team, .contact-intro { min-height: auto; }
+  .story-stage { grid-template-columns: 1fr; min-height: auto; padding-bottom: 4rem; }
+  .ignite-figure { position: relative; top: 0; height: 55svh; min-height: 23rem; }
+  .story-notes { padding: 1rem 0 0; }
+  .story-note { min-height: auto; padding: 1.5rem 0 2.5rem; }
+  .problem-panel { grid-column: 1; }
+  .process-track { gap: 1rem; }
+  .process-track li, .process-track li:nth-child(even) { display: block; transform: none; padding: 1.4rem; }
+  .process-track .step-node { position: static; margin-bottom: 1.2rem; }
+  .process-track::before, .process-track::after { display: none; }
+  .vision { grid-template-columns: 1fr; }
+  .vision-map { min-height: 33rem; }
+  .vision-copy { padding-top: 2rem; }
+  .team { grid-template-columns: 1fr; gap: 1.1rem; }
+  .team-heading { display: block; margin-bottom: 2rem; }
+  .team-heading h2 { margin-top: 1.8rem; }
+  .profile-card { display: grid; grid-template-columns: minmax(8rem,.42fr) minmax(0,.58fr); }
+  .portrait { aspect-ratio: 1; }
+  .profile-info { align-self: center; }
+  .contact-intro { padding-top: 6rem; }
+  .contact-title-wrap { display: block; margin-top: 2.5rem; }
+  .contact-title-wrap h2 { font-size: clamp(2.9rem, 8.5vw, 5rem); }
+  .contact-form { margin-top: 2rem; }
+}
+@media (max-width: 520px) {
+  .hero-copy h1 { font-size: clamp(3rem, 15.2vw, 4.35rem); }
+  .hero::after { background: rgba(255,255,255,.8); }
+  .hero-lede { font-size: 1.05rem; }
+  .mission-bridge, .problem, .services, .process, .vision-copy, .team, .contact-intro { padding-block: 5.5rem; }
+  .story-intro { padding-top: 5.5rem; }
+  .story-stage { padding-inline: var(--page); }
+  .story-note { grid-template-columns: 2rem 1fr; gap: .75rem; }
+  .problem-quote { margin-top: 3.5rem; }
+  .services-grid { gap: .8rem; }
+  .service-card { min-height: 14.5rem; }
+  .vision-map { min-height: 27rem; padding: 3.5rem .25rem; }
+  .network-meta { inset: 1rem; }
+  .network-readout { inset: auto 1rem 1rem; width: calc(100% - 2rem); }
+  .world-label { font-size: .5rem; padding: .18rem .26rem; }
+  .world-label.is-county { font-size: .62rem; }
+  .profile-card { grid-template-columns: 36% 64%; }
+  .profile-info { padding: 1rem; }
+  .profile-info h3 { font-size: 1.25rem; }
+  .profile-info a { font-size: .75rem; }
+  .portrait { min-height: 11rem; }
+  .contact-form { padding: 1.2rem; }
+  .site-footer { padding-bottom: 5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spatial-world canvas { opacity: .45; }
+  .profile-card:hover, .service-card:hover { transform: none; }
+  .motion-ready .reveal:not(.is-visible) { opacity: 1; transform: none; }
+}

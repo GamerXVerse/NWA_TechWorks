@@ -139,7 +139,7 @@ function placeNetworkPackets(now) {
 }
 
 function setNetworkRunning(shouldRun) {
-  if (network?.classList.contains('three-ready') || document.documentElement.classList.contains('animations-paused')) shouldRun = false;
+  if (network?.classList.contains('three-ready') || document.documentElement.classList.contains('spatial-ready') || document.documentElement.classList.contains('animations-paused')) shouldRun = false;
   if (!network || reduceMotion || shouldRun === networkRunning) return;
   networkRunning = shouldRun;
   network.classList.toggle("is-online", shouldRun);
@@ -153,6 +153,7 @@ function setNetworkRunning(shouldRun) {
 }
 
 document.addEventListener('network-3d-ready', () => setNetworkRunning(false));
+document.addEventListener('spatial-world-ready', () => setNetworkRunning(false));
 document.addEventListener('network-motion', event => setNetworkRunning(!event.detail.paused));
 
 const contactForm = document.querySelector('[data-contact-form]');
